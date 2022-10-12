@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "xu1QYmbMfYyKg5puENhtEmgeGGX84yq6c6RxbcqOuZs=",
+  "Source": "StudentsTuitionPay",
+  "BasePath": "_content/StudentsTuitionPay",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
