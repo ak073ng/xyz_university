@@ -17,6 +17,7 @@ namespace StudentsTuitionPay.Models.Payment.Implementations
                     StudentId = p.StudentId,
                     PaymentOptionId = p.PaymentOptionId,
                     ChannelId = p.ChannelId,
+                    Amount = p.Amount,
                     TransactionCode = p.TransactionCode,
                     FromInstitution = p.FromInstitution,
                     ToInstitution = p.ToInstitution,
@@ -37,6 +38,7 @@ namespace StudentsTuitionPay.Models.Payment.Implementations
                     StudentId = p.StudentId,
                     PaymentOptionId = p.PaymentOptionId,
                     ChannelId = p.ChannelId,
+                    Amount = p.Amount,
                     TransactionCode = p.TransactionCode,
                     FromInstitution = p.FromInstitution,
                     ToInstitution = p.ToInstitution,
@@ -55,6 +57,7 @@ namespace StudentsTuitionPay.Models.Payment.Implementations
                 StudentId = paymentNotif.StudentId,
                 PaymentOptionId = paymentNotif.PaymentOptionId,
                 ChannelId = paymentNotif.ChannelId,
+                Amount = paymentNotif.Amount,
                 TransactionCode = paymentNotif.TransactionCode,
                 FromInstitution = paymentNotif.FromInstitution,
                 ToInstitution = paymentNotif.ToInstitution,
@@ -78,6 +81,7 @@ namespace StudentsTuitionPay.Models.Payment.Implementations
                 PaymentNotification.StudentId = paymentNotif.StudentId;
                 PaymentNotification.PaymentOptionId = paymentNotif.PaymentOptionId;
                 PaymentNotification.ChannelId = paymentNotif.ChannelId;
+                PaymentNotification.Amount = paymentNotif.Amount;
                 PaymentNotification.TransactionCode = paymentNotif.TransactionCode;
                 PaymentNotification.FromInstitution = paymentNotif.FromInstitution;
                 PaymentNotification.ToInstitution = paymentNotif.ToInstitution;

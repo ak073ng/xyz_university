@@ -6,6 +6,7 @@
         public int StudentId { get; set; }
         public int PaymentOptionId { get; set; }
         public int ChannelId { get; set; }
+        public int Amount { get; set; }
         public string TransactionCode { get; set; }
         public string FromInstitution { get; set; }
         public string ToInstitution { get; set; }
