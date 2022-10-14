@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Payment;
 using StudentsTuitionPay.Models.Payment.Implementations;
+using StudentsTuitionPay.Models.Payment.Utility;
 
 namespace StudentsTuitionPay.Controllers.PaymentResources
 {
     [ApiController]
-    [Route("api/paymentOption")]
+    [Route("api/payment_options")]
     public class PaymentOptionController : ControllerBase
     {
-        private PaymentOptionRepository PaymentOptionsRepo = new PaymentOptionRepository();
+        private PaymentOptionRepository PaymentOptionsRepo;
 
-        [HttpGet("getPaymentOptions")]
+        public PaymentOptionController(PaymentDbContext dbContext)
+        {
+            PaymentOptionsRepo = new PaymentOptionRepository(dbContext);
+        }
+
+        [HttpGet]
         public ActionResult<Task> GetAllPaymentOptions()
         {
             return Ok(PaymentOptionsRepo.PaymentOptions());
         }
 
-        [HttpGet("getPaymentOption/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<Task> GetPaymentOptionById(int id)
         {
             if (id == 0)
@@ -28,7 +34,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
         }
 
 
-        [HttpPost("addPaymentOption")]
+        [HttpPost]
         public ActionResult<Task> AddPaymentOption([FromBody] PaymentOption paymentOption)
         {
             if (paymentOption == null)
@@ -40,7 +46,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
         }
 
 
-        [HttpPut("updatePaymentOption")]
+        [HttpPut]
         public ActionResult<Task> UpdatePaymentOption([FromBody] PaymentOption paymentOption)
         {
             if (paymentOption == null)
@@ -51,7 +57,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
             return Ok(PaymentOptionsRepo.UpdatePaymentOption(paymentOption));
         }
 
-        [HttpDelete("deletePaymentOption/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeletePaymentOption(int id)
         {
             if (id == 0)

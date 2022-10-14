@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Payment;
 using StudentsTuitionPay.Models.Payment.Implementations;
+using StudentsTuitionPay.Models.Payment.Utility;
 
 namespace StudentsTuitionPay.Controllers.PaymentResources
 {
     [ApiController]
-    [Route("api/channel")]
+    [Route("api/channels")]
     public class ChannelController : ControllerBase
     {
-        private ChannelRepository ChannelsRepo = new ChannelRepository();
+        private ChannelRepository ChannelsRepo;
 
-        [HttpGet("getChannels")]
+        public ChannelController(PaymentDbContext dbContext)
+        {
+            ChannelsRepo = new ChannelRepository(dbContext);
+        }
+
+        [HttpGet]
         public ActionResult<Task> GetAllChannels()
         {
             return Ok(ChannelsRepo.Channels());
         }
 
-        [HttpGet("getChannel/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<Task> GetChannelById(int id)
         {
             if (id == 0)
@@ -28,7 +34,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
         }
 
 
-        [HttpPost("addChannel")]
+        [HttpPost]
         public ActionResult<Task> AddChannel([FromBody] Channel channel)
         {
             if (channel == null)
@@ -40,7 +46,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
         }
 
 
-        [HttpPut("updateChannel")]
+        [HttpPut]
         public ActionResult<Task> UpdateChannel([FromBody] Channel channel)
         {
             if (channel == null)
@@ -51,7 +57,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
             return Ok(ChannelsRepo.UpdateChannel(channel));
         }
 
-        [HttpDelete("deleteChannel/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeleteChannel(int id)
         {
             if (id == 0)

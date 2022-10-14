@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Student;
 using StudentsTuitionPay.Models.Student.Implementations;
+using StudentsTuitionPay.Models.Student.Utility;
 
 namespace StudentsTuitionPay.Controllers.StudentResources
 {
     [ApiController]
-    [Route("api/studentCourse")]
+    [Route("api/student_courses")]
     public class StudentCourseController : ControllerBase
     {
-        private StudentCourseRepository StudentCoursesRepo = new StudentCourseRepository();
+        private StudentCourseRepository StudentCoursesRepo;
 
-        [HttpGet("getStudentCourses")]
-        public ActionResult<Task> GetAllStudentCourses()
+        public StudentCourseController(StudentDbContext dbContext)
         {
-            return Ok(StudentCoursesRepo.StudentCourses);
+            StudentCoursesRepo = new StudentCourseRepository(dbContext);
         }
 
-        [HttpGet("getStudentCourse/{id}")]
+        [HttpGet]
+        public ActionResult<Task> GetAllStudentCourses()
+        {
+            return Ok(StudentCoursesRepo.StudentCourses());
+        }
+
+        [HttpGet("{id}")]
         public ActionResult<Task> GetStudentCourseById(int id)
         {
             if (id == 0)
@@ -28,7 +34,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
         }
 
 
-        [HttpPost("addStudentCourse")]
+        [HttpPost]
         public ActionResult<Task> AddStudentCourse([FromBody] StudentCourse studentCourse)
         {
             if (studentCourse == null)
@@ -39,7 +45,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentCoursesRepo.AddStudentCourse(studentCourse));
         }
 
-        [HttpPut("updateStudentCourse")]
+        [HttpPut]
         public ActionResult<Task> UpdateStudentCourse([FromBody] StudentCourse studentCourse)
         {
             if (studentCourse == null)
@@ -50,7 +56,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentCoursesRepo.UpdateStudentCourse(studentCourse));
         }
 
-        [HttpDelete("deleteStudentCourse/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeleteStudentCourse(int id)
         {
             if (id == 0)

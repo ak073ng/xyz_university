@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Student;
 using StudentsTuitionPay.Models.Student.Implementations;
+using StudentsTuitionPay.Models.Student.Utility;
 
 namespace StudentsTuitionPay.Controllers.StudentResources
 {
     [ApiController]
-    [Route("api/faculty")]
+    [Route("api/faculties")]
     public class FacultyController : ControllerBase
     {
-        private FacultyRepository FacultyRepo = new FacultyRepository();
+        private FacultyRepository FacultyRepo;
 
-        [HttpGet("getFaculties")]
-        public ActionResult<Task> GetAllFacalties()
+        public FacultyController(StudentDbContext dbContext)
         {
-            return Ok(FacultyRepo.Faculties);
+            FacultyRepo = new FacultyRepository(dbContext);
         }
 
-        [HttpGet("getFaculty/{id}")]
+        [HttpGet]
+        public ActionResult<Task> GetAllFacalties()
+        {
+            return Ok(FacultyRepo.Faculties());
+        }
+
+        [HttpGet("{id}")]
         public ActionResult<Task> GetFacaltyById(int id)
         {
             if (id == 0)
@@ -27,7 +33,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(FacultyRepo.getFacultyById(id));
         }
 
-        [HttpPost("addFaculty")]
+        [HttpPost]
         public ActionResult<Task> AddFacalty([FromBody] Faculty faculty)
         {
             if (faculty == null)
@@ -38,7 +44,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(FacultyRepo.AddFaculty(faculty));
         }
 
-        [HttpPut("updateFaculty")]
+        [HttpPut]
         public ActionResult<Task> UpdateFacalty([FromBody] Faculty faculty)
         {
             if (faculty == null)
@@ -49,7 +55,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(FacultyRepo.UpdateFaculty(faculty));
         }
 
-        [HttpDelete("deleteFaculty/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeleteFacalty(int id)
         {
             if (id == 0)

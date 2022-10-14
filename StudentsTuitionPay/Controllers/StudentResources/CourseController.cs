@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Student;
 using StudentsTuitionPay.Models.Student.Implementations;
+using StudentsTuitionPay.Models.Student.Utility;
 
 namespace StudentsTuitionPay.Controllers.StudentResources
 {
     [ApiController]
-    [Route("api/course")]
+    [Route("api/courses")]
     public class CourseController : ControllerBase
     {
-        private CourseRepository CoursesRepo = new CourseRepository();
+        private CourseRepository CoursesRepo;
 
-        [HttpGet("getCourses")]
-        public ActionResult<Task> GetAllCourses()
+        public CourseController(StudentDbContext dbContext)
         {
-            return Ok(CoursesRepo.Courses);
+            CoursesRepo = new CourseRepository(dbContext);
         }
 
-        [HttpGet("getCourse/{id}")]
+        [HttpGet]
+        public ActionResult<Task> GetAllCourses()
+        {
+            return Ok(CoursesRepo.Courses());
+        }
+
+        [HttpGet("{id}")]
         public ActionResult<Task> GetCourseById(int id)
         {
             if (id == 0)
@@ -27,7 +33,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(CoursesRepo.getCourseById(id));
         }
 
-        [HttpPost("addCourse")]
+        [HttpPost]
         public ActionResult<Task> AddCourse([FromBody] Course course)
         {
             if (course == null)
@@ -38,7 +44,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(CoursesRepo.AddCourse(course));
         }
 
-        [HttpPut("updateCourse")]
+        [HttpPut]
         public ActionResult<Task> UpdateCourse([FromBody] Course course)
         {
             if (course == null)
@@ -49,7 +55,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(CoursesRepo.UpdateCourse(course));
         }
 
-        [HttpDelete("deleteCourse/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeleteCourse(int id)
         {
             if (id == 0)

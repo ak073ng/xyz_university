@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Student;
 using StudentsTuitionPay.Models.Student.Implementations;
+using StudentsTuitionPay.Models.Student.Utility;
 
 namespace StudentsTuitionPay.Controllers.StudentResources
 {
     [ApiController]
-    [Route("api/studentFee")]
+    [Route("api/student_fees")]
     public class StudentFeeController : ControllerBase
     {
-        private StudentFeeRepository StudentFeesRepo = new StudentFeeRepository();
+        private StudentFeeRepository StudentFeesRepo;
 
-        [HttpGet("getStudentFees")]
-        public ActionResult<Task> GetAllStudentCourses()
+        public StudentFeeController(StudentDbContext dbContext)
         {
-            return Ok(StudentFeesRepo.StudentFees);
+            StudentFeesRepo = new StudentFeeRepository(dbContext);
         }
 
-        [HttpGet("getStudentFee/{id}")]
+        [HttpGet]
+        public ActionResult<Task> GetAllStudentCourses()
+        {
+            return Ok(StudentFeesRepo.StudentFees());
+        }
+
+        [HttpGet("{id}")]
         public ActionResult<Task> GetStudentCourseById(int id)
         {
             if (id == 0)
@@ -27,7 +33,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentFeesRepo.getStudenFeeById(id));
         }
 
-        [HttpPost("addStudentFee")]
+        [HttpPost]
         public ActionResult<Task> AddStudentCourse([FromBody] StudentFee studentFee)
         {
             if (studentFee == null)
@@ -38,7 +44,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentFeesRepo.AddStudentFee(studentFee));
         }
 
-        [HttpPut("updateStudentFee")]
+        [HttpPut]
         public ActionResult<Task> UpdateStudentCourse([FromBody] StudentFee studentFee)
         {
             if (studentFee == null)
@@ -49,7 +55,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentFeesRepo.UpdateStudentFee(studentFee));
         }
 
-        [HttpDelete("deleteStudentFee/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeleteStudentCourse(int id)
         {
             if (id == 0)

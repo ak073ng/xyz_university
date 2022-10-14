@@ -8,6 +8,11 @@ namespace StudentsTuitionPay.Models.Student.Implementations
     {
         private readonly StudentDbContext DbContext;
 
+        public CourseRepository(StudentDbContext dbContext)
+        {
+            DbContext = dbContext;
+        }
+
         public async Task<IEnumerable<Course>> Courses()
         {
             var List = await DbContext.Courses.Select(

@@ -8,6 +8,11 @@ namespace StudentsTuitionPay.Models.Payment.Implementations
     {
         private readonly PaymentDbContext DbContext;
 
+        public ChannelRepository(PaymentDbContext dbContext)
+        {
+            DbContext = dbContext;
+        }
+
         public async Task<IEnumerable<Channel>> Channels()
         {
             var List = await DbContext.Channels.Select(

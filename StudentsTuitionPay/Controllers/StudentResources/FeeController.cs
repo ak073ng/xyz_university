@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Student;
 using StudentsTuitionPay.Models.Student.Implementations;
+using StudentsTuitionPay.Models.Student.Utility;
 
 namespace StudentsTuitionPay.Controllers.StudentResources
 {
     [ApiController]
-    [Route("api/fee")]
+    [Route("api/fees")]
     public class FeeController : ControllerBase
     {
-        private FeeRepository FeesRepo = new FeeRepository();
+        private FeeRepository FeesRepo;
 
-        [HttpGet("getFees")]
-        public ActionResult<Task> GetAllFees()
+        public FeeController(StudentDbContext dbContext)
         {
-            return Ok(FeesRepo.Fees);
+            FeesRepo = new FeeRepository(dbContext);
         }
 
-        [HttpGet("getFee/{id}")]
+        [HttpGet]
+        public ActionResult<Task> GetAllFees()
+        {
+            return Ok(FeesRepo.Fees());
+        }
+
+        [HttpGet("{id}")]
         public ActionResult<Task> GetFeeById(int id)
         {
             if (id == 0)
@@ -27,7 +33,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(FeesRepo.getFeeById(id));
         }
 
-        [HttpPost("addFee")]
+        [HttpPost]
         public ActionResult<Task> AddFee([FromBody] Fee fee)
         {
             if (fee == null)
@@ -38,7 +44,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(FeesRepo.AddFee(fee));
         }
 
-        [HttpPut("updateFee")]
+        [HttpPut]
         public ActionResult<Task> UpdateFee([FromBody] Fee fee)
         {
             if (fee == null)
@@ -49,7 +55,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(FeesRepo.UpdateFee(fee));
         }
 
-        [HttpDelete("deleteFee/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeleteFee(int id)
         {
             if (id == 0)

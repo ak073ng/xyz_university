@@ -8,6 +8,11 @@ namespace StudentsTuitionPay.Models.Payment.Implementations
     {
         private readonly PaymentDbContext DbContext;
 
+        public PaymentNotificationRepository(PaymentDbContext dbContext)
+        {
+            DbContext = dbContext;
+        }
+
         public async Task<IEnumerable<PaymentNotification>> PaymentNotifications()
         {
             var List = await DbContext.PaymentNotifications.Select(

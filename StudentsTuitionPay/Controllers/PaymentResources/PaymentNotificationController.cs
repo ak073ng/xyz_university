@@ -1,24 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Payment;
 using StudentsTuitionPay.Models.Payment.Implementations;
+using StudentsTuitionPay.Models.Payment.Utility;
 
 namespace StudentsTuitionPay.Controllers.PaymentResources
 {
     [ApiController]
-    [Route("api/payment")]
+    [Route("api/payments")]
     public class PaymentNotificationController : ControllerBase
     {
-        private PaymentNotificationRepository PaymentNotifsRepo = new PaymentNotificationRepository();
-        //private PaymentOptionRepository PaymentOptionsRepo = new PaymentOptionRepository();
-        //private ChannelRepository ChannelsRepo = new ChannelRepository();
+        private PaymentNotificationRepository PaymentNotifsRepo;
 
-        [HttpGet("getPayments")]
+        public PaymentNotificationController(PaymentDbContext dbContext)
+        {
+            PaymentNotifsRepo = new PaymentNotificationRepository(dbContext);
+        }
+
+        [HttpGet]
         public ActionResult<Task> GetAllPayments()
         {
             return Ok(PaymentNotifsRepo.PaymentNotifications());
         }
 
-        [HttpGet("getPayment/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<Task> GetPaymentById(int id)
         {
             if (id == 0)
@@ -30,7 +34,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
         }
 
 
-        [HttpPost("addPayment")]
+        [HttpPost]
         public ActionResult<Task> AddPayment([FromBody] PaymentNotification payment)
         {
             if (payment == null)
@@ -42,7 +46,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
         }
 
 
-        [HttpPut("updatePayment")]
+        [HttpPut]
         public ActionResult<Task> UpdatePayment([FromBody] PaymentNotification payment)
         {
             if (payment == null)
@@ -53,7 +57,7 @@ namespace StudentsTuitionPay.Controllers.PaymentResources
             return Ok(PaymentNotifsRepo.UpdatePaymentNotif(payment));
         }
 
-        [HttpDelete("deletePayment/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> DeletePayment(int id)
         {
             if (id == 0)

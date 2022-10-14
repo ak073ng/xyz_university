@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsTuitionPay.Models.Student;
 using StudentsTuitionPay.Models.Student.Implementations;
+using StudentsTuitionPay.Models.Student.Utility;
 
 namespace StudentsTuitionPay.Controllers.StudentResources
 {
     [ApiController]
-    [Route("api/student")]
+    [Route("api/students")]
     public class StudentController : ControllerBase
     {
-        private StudentRepository StudentsRepo = new StudentRepository();
+        private StudentRepository StudentsRepo;
 
-        [HttpGet("getStudents")]
+        public StudentController(StudentDbContext dbContext)
+        {
+            StudentsRepo = new StudentRepository(dbContext);
+        }
+
+        [HttpGet]
         public ActionResult<Task> GetAllStudents()
         {
             return Ok(StudentsRepo.Students());
         }
 
-        [HttpGet("getStudent/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<Task> GetStudentById(int id)
         {
             if (id == 0)
@@ -27,7 +33,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentsRepo.getStudentById(id));
         }
 
-        [HttpPost("addStudent")]
+        [HttpPost]
         public ActionResult<Task> AddStudent([FromBody] Student student)
         {
             if(student == null)
@@ -38,7 +44,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentsRepo.AddStudent(student));
         }
         
-        [HttpPut("updateStudent")]
+        [HttpPut]
         public ActionResult<Task> PutUpdateStudent([FromBody] Student student)
         {
             if (student == null)
@@ -49,7 +55,7 @@ namespace StudentsTuitionPay.Controllers.StudentResources
             return Ok(StudentsRepo.UpdateStudent(student));
         }
 
-        [HttpDelete("deleteStudent/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Task> Delete(int id)
         {
             if (id == 0)

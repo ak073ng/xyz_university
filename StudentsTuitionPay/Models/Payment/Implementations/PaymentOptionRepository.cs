@@ -8,6 +8,11 @@ namespace StudentsTuitionPay.Models.Payment.Implementations
     {
         private readonly PaymentDbContext DbContext;
 
+        public PaymentOptionRepository(PaymentDbContext dbContext)
+        {
+            DbContext = dbContext;
+        }
+
         public async Task<IEnumerable<PaymentOption>> PaymentOptions()
         {
             var List = await DbContext.PaymentOptions.Select(
